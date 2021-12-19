@@ -9,7 +9,7 @@ from pyjstat import pyjstat  # type: ignore
 _MORTALITY_TABLE = "demo_r_mweek3"
 _POPULATION_TABLE = "demo_r_pjangrp3"
 _BASE_URL = "http://ec.europa.eu/eurostat/wdds/rest/data/v2.1/json/en"
-_SINCETIMEPERIOD = "2020W01"
+_SINCETIMEPERIOD = "2016W01"
 _PRECISION = "1"
 _UNIT = "NR"
 _SEX = "T"
@@ -22,6 +22,7 @@ _AGE_COLUMN = "age"
 _TIME_COLUMN = "time"
 
 _PERIOD = "period"
+_1_MILLION = 1000000
 
 
 def get_mortality_data(
@@ -78,8 +79,8 @@ def get_population_data(
         geo: At which region granularity to get data for.
 
     Returns:
-        A table containing population on January 1st per age group, geo and yearly
-        period.
+        A table containing population in millions on January 1st per age group, geo
+        and yearly period.
     """
     return (
         pyjstat.Dataset.read(_build_query(geo=geo, ages=ages, table=_POPULATION_TABLE))
@@ -95,6 +96,7 @@ def _preprocess_population_data(data: pd.DataFrame) -> pd.DataFrame:
         .pipe(_create_yearly_period)
         .set_index([_GEO_COLUMN, _AGE_COLUMN], append=True)
         .pipe(_propagate_values_to_current_year)
+        .assign(value=lambda df: df["value"] / _1_MILLION)
     )
 
 

@@ -1,0 +1,7 @@
+/.mypy_cache
+/.pytest_cache
+/.vscode
+/__pycache__
+*.cfg
+/backend/env*
+*egg-info

@@ -1,1 +1,1 @@
-isort --skip env . && black --exclude env .
+isort . && black .

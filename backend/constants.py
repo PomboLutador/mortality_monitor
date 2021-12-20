@@ -1,0 +1,5 @@
+GEO_COLUMN = "geo"
+AGE_COLUMN = "age"
+PERIOD_COLUMN = "period"
+DEATHS_COLUMN = "deaths"
+POPULATION_COLUMN = "population"

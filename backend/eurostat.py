@@ -6,6 +6,14 @@ from typing import Iterable, Literal
 import pandas as pd
 from pyjstat import pyjstat  # type: ignore
 
+from constants import (
+    AGE_COLUMN,
+    DEATHS_COLUMN,
+    GEO_COLUMN,
+    PERIOD_COLUMN,
+    POPULATION_COLUMN,
+)
+
 _MORTALITY_TABLE = "demo_r_mweek3"
 _POPULATION_TABLE = "demo_r_pjangrp3"
 _BASE_URL = "http://ec.europa.eu/eurostat/wdds/rest/data/v2.1/json/en"
@@ -17,11 +25,9 @@ _WEEKDAY = "0"
 
 _UNIT_COLUMN = "unit"
 _SEX_COLUMN = "sex"
-_GEO_COLUMN = "geo"
-_AGE_COLUMN = "age"
 _TIME_COLUMN = "time"
+_VALUE_COLUMN = "value"
 
-_PERIOD = "period"
 _1_MILLION = 1000000
 
 
@@ -56,8 +62,9 @@ def _preprocess_mortality_data(data: pd.DataFrame) -> pd.DataFrame:
     return (
         data.drop(columns=[_UNIT_COLUMN, _SEX_COLUMN])
         .pipe(_create_weekly_period)
-        .set_index([_GEO_COLUMN, _AGE_COLUMN], append=True)
+        .set_index([GEO_COLUMN, AGE_COLUMN], append=True)
         .dropna()
+        .rename(columns={_VALUE_COLUMN: DEATHS_COLUMN})
     )
 
 
@@ -94,9 +101,10 @@ def _preprocess_population_data(data: pd.DataFrame) -> pd.DataFrame:
         data.drop(columns=[_UNIT_COLUMN, _SEX_COLUMN])
         .dropna()
         .pipe(_create_yearly_period)
-        .set_index([_GEO_COLUMN, _AGE_COLUMN], append=True)
+        .set_index([GEO_COLUMN, AGE_COLUMN], append=True)
         .pipe(_propagate_values_to_current_year)
-        .assign(value=lambda df: df["value"] / _1_MILLION)
+        .assign(**{POPULATION_COLUMN: lambda df: df[_VALUE_COLUMN] / _1_MILLION})
+        .drop(columns=_VALUE_COLUMN)
     )
 
 
@@ -121,20 +129,18 @@ def _propagate_values_to_current_year(data: pd.DataFrame) -> pd.DataFrame:
     """
     return (
         pd.merge(  # type: ignore
-            left=data.reset_index()
-            .loc[:, [_GEO_COLUMN, _AGE_COLUMN]]
-            .drop_duplicates(),
+            left=data.reset_index().loc[:, [GEO_COLUMN, AGE_COLUMN]].drop_duplicates(),
             right=pd.DataFrame(
                 {
-                    _PERIOD: pd.period_range(
-                        start=data.reset_index()[_PERIOD].min(),
+                    PERIOD_COLUMN: pd.period_range(
+                        start=data.reset_index()[PERIOD_COLUMN].min(),
                         end=pd.Period(dt.date.today().year, freq="Y"),
                     )
                 }
             ),
             how="cross",
         )
-        .set_index([_PERIOD, _AGE_COLUMN, _GEO_COLUMN])
+        .set_index([PERIOD_COLUMN, AGE_COLUMN, GEO_COLUMN])
         .join(data)
         .interpolate()
     )
@@ -147,13 +153,13 @@ def _create_weekly_period(
     return (
         data.assign(
             **{
-                _PERIOD: lambda df: pd.to_datetime(
+                PERIOD_COLUMN: lambda df: pd.to_datetime(
                     df[_TIME_COLUMN].str.replace(split_character, "-") + f"-{_WEEKDAY}",
                     format=time_format,
                 ).dt.to_period(freq="W")
             }
         )
-        .set_index(_PERIOD)
+        .set_index(PERIOD_COLUMN)
         .drop(columns=[_TIME_COLUMN])
     )
 
@@ -167,7 +173,7 @@ def _create_yearly_period(data: pd.DataFrame, time_format: str = "%Y") -> pd.Dat
                 format=time_format,
             ).dt.to_period(freq="Y")
         )
-        .set_index(_PERIOD)
+        .set_index(PERIOD_COLUMN)
         .drop(columns=[_TIME_COLUMN])
     )
 

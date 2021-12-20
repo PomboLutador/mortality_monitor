@@ -5,6 +5,7 @@ import pandas as pd
 from constants import (
     AGE_COLUMN,
     DEATHS_COLUMN,
+    DEATHS_PER_MILLION_COLUMN,
     GEO_COLUMN,
     PERIOD_COLUMN,
     POPULATION_COLUMN,
@@ -20,7 +21,7 @@ def get_deaths_per_million(
     population_data: pd.DataFrame,
     geo: str,
     ages: tuple[str, ...],
-) -> pd.DataFrame:
+) -> pd.Series:
     """Gets aggregated deaths per million.
 
     The data is first filtered to contain just the selected geo and ages and then
@@ -55,8 +56,7 @@ def get_deaths_per_million(
             how="left",
         )
         .assign(deaths_per_million=lambda df: df[DEATHS_COLUMN] / df[POPULATION_COLUMN])
-        .drop(columns=[DEATHS_COLUMN, _YEAR_COLUMN, POPULATION_COLUMN])
-        .set_index([PERIOD_COLUMN, GEO_COLUMN])
+        .set_index(PERIOD_COLUMN)[DEATHS_PER_MILLION_COLUMN]
     )
 
 

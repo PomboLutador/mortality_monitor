@@ -142,7 +142,8 @@ def _propagate_values_to_current_year(data: pd.DataFrame) -> pd.DataFrame:
         )
         .set_index([PERIOD_COLUMN, AGE_COLUMN, GEO_COLUMN])
         .join(data)
-        .interpolate()
+        .groupby([AGE_COLUMN, GEO_COLUMN])
+        .apply(pd.DataFrame.interpolate)
     )
 
 

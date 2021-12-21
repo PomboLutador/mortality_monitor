@@ -12,12 +12,12 @@ from constants import (
     GEO_COLUMN,
     PERIOD_COLUMN,
     POPULATION_COLUMN,
+    SINCE_TIME_PERIOD,
 )
 
 _MORTALITY_TABLE = "demo_r_mweek3"
 _POPULATION_TABLE = "demo_r_pjangrp3"
 _BASE_URL = "http://ec.europa.eu/eurostat/wdds/rest/data/v2.1/json/en"
-_SINCETIMEPERIOD = "2016W01"
 _PRECISION = "1"
 _UNIT = "NR"
 _SEX = "T"
@@ -113,7 +113,7 @@ def _build_query(
     ages: Iterable[str],
     table: str,
     sex: str = _SEX,
-    since_time_period: str = _SINCETIMEPERIOD,
+    since_time_period: str = SINCE_TIME_PERIOD,
 ) -> str:
     age_string = "age=" + "age=".join([f"{age}&" for age in ages])
     return (

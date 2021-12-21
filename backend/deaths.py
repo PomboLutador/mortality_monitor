@@ -16,6 +16,29 @@ from util import get_data_age
 _YEAR_COLUMN = "year"
 
 
+def get_deaths(
+    mortality_data: pd.DataFrame,
+    geo: str,
+    ages: tuple[str, ...],
+) -> pd.Series:
+    """Gets aggregated deaths.
+
+    Args:
+        mortality_data: Table containing deaths per geo, age and weekly period.
+        geo: Region for which to get aggregated deaths per million.
+        ages: Ages for which to get aggregated deaths per million. Of the form
+            'Y35-39', 'Y-40-44', etc. with the exception of 'Y_LT5' and 'Y_GT90'.
+
+    Returns:
+        Table containing deaths for each period for the chosen geo and age groups.
+    """
+    return (
+        mortality_data.reset_index()
+        .pipe(_filter_geo, geo=geo)
+        .pipe(_aggregate_across_ages, ages=ages)
+    ).set_index(PERIOD_COLUMN)[DEATHS_COLUMN]
+
+
 def get_deaths_per_million(
     mortality_data: pd.DataFrame,
     population_data: pd.DataFrame,
@@ -23,9 +46,6 @@ def get_deaths_per_million(
     ages: tuple[str, ...],
 ) -> pd.Series:
     """Gets aggregated deaths per million.
-
-    The data is first filtered to contain just the selected geo and ages and then
-    aggregated across all ages.
 
     Args:
         mortality_data: Table containing deaths per geo, age and weekly period.
@@ -42,12 +62,14 @@ def get_deaths_per_million(
     return (
         pd.merge(
             left=(
-                mortality_data.pipe(_get_year_column)
+                mortality_data.reset_index()
+                .pipe(_get_year_column)
                 .pipe(_filter_geo, geo=geo)
                 .pipe(_aggregate_across_ages, ages=ages)
             ),
             right=(
-                population_data.pipe(_get_year_column)
+                population_data.reset_index()
+                .pipe(_get_year_column)
                 .pipe(_filter_geo, geo=geo)
                 .pipe(_aggregate_across_ages, ages=ages)
                 .drop(columns=PERIOD_COLUMN)
@@ -61,7 +83,7 @@ def get_deaths_per_million(
 
 
 def _get_year_column(data: pd.DataFrame) -> pd.DataFrame:
-    return data.reset_index().assign(
+    return data.assign(
         year=lambda df: df[PERIOD_COLUMN].map(lambda period: period.year)
     )
 

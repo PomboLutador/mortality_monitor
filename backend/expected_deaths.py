@@ -165,5 +165,5 @@ if __name__ == "__main__":
             )
             plt.title(f"{GEO}")
             plt.legend(loc="best")
-        plt.savefig(f"plots/plot_{GEO}_LOOKBACK_YEARS_3.png")
+        plt.savefig(f"plots/plot_{GEO}.png")
         plt.clf()

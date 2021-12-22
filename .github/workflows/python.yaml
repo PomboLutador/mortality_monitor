@@ -23,14 +23,18 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
+        if [ -f mortality_monitor/requirements.txt ]; then pip install -r mortality_monitor/requirements.txt; fi
     - name: Check formatting with isort and black
       run: |
-        isort backend/. --check-only && black backend/. --check
+        isort mortality_monitor/. --check-only && black mortality_monitor/. --check
     - name: Lint with flake8
       run: |
         # stop the build if there are any flake8 issues
-        flake8 backend/. --count --show-source --statistics --extend-ignore=F541,E203 --max-line-length=88
+        flake8 mortality_monitor/. --count --show-source --statistics --extend-ignore=F541,E203 --max-line-length=88
     - name: Type check with mypy
       run: |
-        mypy backend/.
+        mypy mortality_monitor/.
+    - name: Run tests
+      run: |
+        pip install pytest
+        pytest

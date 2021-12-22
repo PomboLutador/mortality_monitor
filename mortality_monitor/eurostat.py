@@ -6,7 +6,7 @@ from typing import Iterable, Literal
 import pandas as pd
 from pyjstat import pyjstat  # type: ignore
 
-from constants import (
+from mortality_monitor.constants import (
     AGE_COLUMN,
     DEATHS_COLUMN,
     GEO_COLUMN,

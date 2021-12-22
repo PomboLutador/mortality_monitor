@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from constants import (
+from mortality_monitor.constants import (
     AGE_COLUMN,
     DEATHS_COLUMN,
     DEATHS_PER_MILLION_COLUMN,
@@ -10,8 +10,8 @@ from constants import (
     PERIOD_COLUMN,
     POPULATION_COLUMN,
 )
-from eurostat import get_mortality_data, get_population_data
-from util import get_data_age
+from mortality_monitor.eurostat import get_mortality_data, get_population_data
+from mortality_monitor.util import get_data_age
 
 _YEAR_COLUMN = "year"
 

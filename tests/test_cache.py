@@ -9,8 +9,6 @@ from mortality_monitor.cache import DataFrameFileCache
 from mortality_monitor.util import read_csv_with_weekly_period
 
 PATH_TO_DATA = "tests/data/mortality_data.csv"
-DATA_FOLDER = "tests/cache/data"
-ARCHIVE_FOLDER = "tests/cache/archive"
 CACHE_TIMEOUT_TIME = 1 / (60 * 60 * 24)
 
 
@@ -43,6 +41,7 @@ def test_get_data(read_function, tmp_path):
     # then
     pd.testing.assert_frame_equal(result, data)
 
+
 @pytest.mark.parametrize(("read_function"), [pd.read_csv, read_csv_with_weekly_period])
 def test_cache_timeout(read_function, tmp_path):
     # given
@@ -58,7 +57,7 @@ def test_cache_timeout(read_function, tmp_path):
     today = datetime.datetime.now().strftime("%d_%m_%Y")
 
     # when and then
-    sleep(3600*CACHE_TIMEOUT_TIME) # CACHE_TIMEOUT_TIME is in hours
+    sleep(3600 * CACHE_TIMEOUT_TIME)  # CACHE_TIMEOUT_TIME is in hours
     with pytest.raises(OSError):
         cache.get_data(filename="cached_data_test", read_function=read_function)
     assert os.path.isfile(f"{archive_folder}/{today}_cached_data_test.csv")

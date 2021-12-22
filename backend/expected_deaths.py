@@ -138,8 +138,7 @@ if __name__ == "__main__":
 
     AVAILABLE_AGES = tuple(QUERY_AGE_TO_DATA_AGE.keys())
     mortality_data = get_mortality_data(geo="country", ages=AVAILABLE_AGES)
-    ALL_GEOS = tuple(mortality_data.reset_index()[GEO_COLUMN].unique())
-    for GEO in ALL_GEOS:
+    for GEO in tuple(mortality_data.reset_index()[GEO_COLUMN].unique()):
         for AGE_GROUP in (below_65s, over_65s):
 
             deaths = get_deaths(
@@ -147,17 +146,19 @@ if __name__ == "__main__":
                 geo=GEO,
                 ages=AGE_GROUP,
             )
-            age_string = "65_and_over" if AGE_GROUP == over_65s else "below_65"
+            age_string = "65+" if AGE_GROUP == over_65s else "<65"
             print(f"Working on country {GEO} and age group {age_string}")
             expected_deaths = get_expected_deaths(deaths=deaths)
 
             plt.plot(
+                [period.to_timestamp() for period in deaths.index],
                 deaths.values,
                 label=f"Actuals - {age_string}",
                 linestyle=":" if AGE_GROUP == over_65s else "--",
                 color="red",
             )
             plt.plot(
+                [period.to_timestamp() for period in expected_deaths.index],
                 expected_deaths.values,
                 label=f"Expected - {age_string}",
                 linestyle=":" if AGE_GROUP == over_65s else "--",

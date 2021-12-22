@@ -16,35 +16,18 @@ class DataFrameFileCache:
     def put_data(self, data: pd.DataFrame, filename: str) -> None:
         if not os.path.isdir(self.data_folder):
             os.makedirs(self.data_folder)
-
-        if self.file_extension == "csv":
-            data.to_csv(
-                f"{self.data_folder}/{filename}.{self.file_extension}", index=False
-            )
-        else:
-            raise NotImplementedError("Please use an implemented file extension")
+        data.to_csv(f"{self.data_folder}/{filename}.{self.file_extension}", index=False)
 
     def get_data(self, filename: str, read_function: Callable) -> pd.DataFrame:
         if self._check_if_file_already_exists(filename=filename):
             if self._is_timedout(filename=filename):
-                print("The file exists but not up to date - please get new data")
-                print("Archiving old file now ...")
                 self._archive_data(filename=filename)
-                raise IOError(
+                raise OSError(
                     "The file exists but not up to date - please get new data"
                 )
-            if self.file_extension == "csv":
-                print(f"Reading csv {filename} from disk")
-                return read_function(
-                    f"{self.data_folder}/{filename}.{self.file_extension}"
-                )
-            else:
-                raise NotImplementedError(
-                    "This file extension is not implemented yet, pick another one"
-                )
+            return read_function(f"{self.data_folder}/{filename}.{self.file_extension}")
         else:
-            print("This file does not exist - please cache it first")
-            raise IOError("This file does not exist - please cache it first")
+            raise FileNotFoundError("This file does not exist - please cache it first")
 
     def _archive_data(self, filename: str) -> None:
         if not os.path.isdir(self.archive_folder):

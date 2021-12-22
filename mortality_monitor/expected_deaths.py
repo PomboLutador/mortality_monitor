@@ -6,7 +6,7 @@ from typing import Iterable
 import numpy as np
 import pandas as pd
 
-from constants import GEO_COLUMN
+from mortality_monitor.constants import GEO_COLUMN
 
 _1_YEAR = 52
 _STANDARD_DEVIATION_PRECISION = 1
@@ -119,9 +119,9 @@ def _get_rid_of_outliers(values: Iterable[float]) -> tuple[float, ...]:
 if __name__ == "__main__":
     import matplotlib.pyplot as plt  # type: ignore
 
-    from deaths import get_deaths
-    from eurostat import get_mortality_data
-    from util import QUERY_AGE_TO_DATA_AGE
+    from mortality_monitor.deaths import get_deaths
+    from mortality_monitor.eurostat import get_mortality_data
+    from mortality_monitor.util import QUERY_AGE_TO_DATA_AGE
 
     below_65s = ("Y_LT5",) + tuple(
         f"Y{start}-{end}"

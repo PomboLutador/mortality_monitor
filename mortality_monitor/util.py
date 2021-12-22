@@ -1,3 +1,5 @@
+import pandas as pd
+
 FROM, TO = (tuple(i for i in range(5, 90, 5)), tuple(i + 4 for i in range(5, 90, 5)))
 
 QUERY_AGE_TO_DATA_AGE = {
@@ -16,3 +18,11 @@ def get_data_age(query_age: str) -> str:
     E.g.: "Y35-39" -> "From 35 to 39 years"
     """
     return QUERY_AGE_TO_DATA_AGE[query_age]
+
+
+def read_csv_with_weekly_period(path: str) -> pd.DataFrame:
+    return pd.read_csv(path).assign(
+        period=lambda df: pd.to_datetime(
+            df["period"].str.split("/", expand=True)[1]
+        ).dt.to_period(freq="W")
+    )

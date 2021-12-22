@@ -2,6 +2,6 @@
 *.pytest_cache
 *.vscode
 *__pycache__
-/backend/env*
+/mortality_monitor/env*
 *egg-info
 *.png

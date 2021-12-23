@@ -58,7 +58,29 @@ def test_cache_timeout(read_function, tmp_path):
 
     # when and then
     sleep(3600 * CACHE_TIMEOUT_TIME)  # CACHE_TIMEOUT_TIME is in hours
-    with pytest.raises(OSError):
+    with pytest.raises(FileNotFoundError):
         cache.get_data(filename="cached_data_test", read_function=read_function)
     assert os.path.isfile(f"{archive_folder}/{today}_cached_data_test.csv")
     assert not os.path.isfile(f"{data_folder}/cached_data_test.csv")
+
+
+def test_raises_error_if_data_contains_index_column(tmp_path):
+    # given
+    data_folder = str(tmp_path / "data")
+    archive_folder = str(tmp_path / "archive")
+    cache = DataFrameFileCache(
+        data_folder=data_folder,
+        archive_folder=archive_folder,
+        timeout_hours=CACHE_TIMEOUT_TIME,
+    )
+    data = pd.DataFrame(
+        [
+            {"index": "abc", "value": 1},
+            {"index": "cab", "value": 3},
+            {"index": "bca", "value": 5},
+        ]
+    )
+
+    # when and then
+    with pytest.raises(ValueError):
+        cache.put_data(data=data, filename="some-filename")

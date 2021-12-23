@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pandas as pd
 
 FROM, TO = (tuple(i for i in range(5, 90, 5)), tuple(i + 4 for i in range(5, 90, 5)))
@@ -10,6 +12,10 @@ QUERY_AGE_TO_DATA_AGE = {
     },
     "Y_GE90": "90 years or over",
 }
+
+
+def get_all_age_groups_for_query() -> tuple[str, ...]:
+    return tuple(QUERY_AGE_TO_DATA_AGE.keys())
 
 
 def get_data_age(query_age: str) -> str:

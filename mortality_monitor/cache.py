@@ -23,7 +23,7 @@ class DataFrameFileCache:
         Raises:
             If the data contains a column named 'index' a ValueError is raised.
         """
-        if "index" in data.columns:
+        if ("index" in data.columns) or ("index" in data.index.names):
             raise ValueError("No column can be named 'index'.")
 
         def drop_index_column(data: pd.DataFrame) -> pd.DataFrame:

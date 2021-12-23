@@ -9,7 +9,7 @@ from mortality_monitor.cache import DataFrameFileCache
 from mortality_monitor.util import read_csv_with_weekly_period
 
 PATH_TO_DATA = "tests/data/mortality_data.csv"
-CACHE_TIMEOUT_TIME = 1 / (60 * 60 * 24)
+CACHE_TIMEOUT_TIME = 1 / (60 * 60 * 10)
 
 
 def test_put_data(tmp_path):
@@ -57,7 +57,7 @@ def test_cache_timeout(read_function, tmp_path):
     today = datetime.datetime.now().strftime("%d_%m_%Y")
 
     # when and then
-    sleep(3600 * CACHE_TIMEOUT_TIME)  # CACHE_TIMEOUT_TIME is in hours
+    sleep(0.1)
     with pytest.raises(FileNotFoundError):
         cache.get_data(filename="cached_data_test", read_function=read_function)
     assert os.path.isfile(f"{archive_folder}/{today}_cached_data_test.csv")

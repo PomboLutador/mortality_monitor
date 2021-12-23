@@ -14,22 +14,51 @@ class DataFrameFileCache:
     archive_folder: str = "archive"
 
     def put_data(self, data: pd.DataFrame, filename: str) -> None:
+        """Caches data by saving it as a csv.
+
+        Args:
+            data: Data to cache as a csv.
+            filename: Name of the csv file the data is saved to.
+
+        Raises:
+            If the data contains a column named 'index' a ValueError is raised.
+        """
+        if ("index" in data.columns) or ("index" in data.index.names):
+            raise ValueError("No column can be named 'index'.")
+
+        def drop_index_column(data: pd.DataFrame) -> pd.DataFrame:
+            return data.drop(columns="index") if "index" in data.columns else data
+
         if not os.path.isdir(self.data_folder):
             os.makedirs(self.data_folder)
-        data.to_csv(f"{self.data_folder}/{filename}.{self.file_extension}", index=False)
+        data.reset_index().pipe(drop_index_column).to_csv(
+            f"{self.data_folder}/{filename}.{self.file_extension}", index=False
+        )
 
     def get_data(self, filename: str, read_function: Callable) -> pd.DataFrame:
-        if self._check_if_file_already_exists(filename=filename):
+        """Reads data from csv file if possible.
+
+        Args:
+            filename: Name of the csv file for which to look for.
+            read_function: Callable which consumes path to csv and outputs the data.
+
+        Returns:
+            Table containing the data in the csv.
+        Raises:
+            FileNotFoundError if the file is timed out or has not been cached before.
+        """
+        if self._file_already_exists(filename=filename):
             if self._is_timedout(filename=filename):
                 self._archive_data(filename=filename)
-                raise OSError(
-                    "The file exists but not up to date - please get new data"
-                )
+                raise FileNotFoundError(f"File {filename} has timed out.")
             return read_function(f"{self.data_folder}/{filename}.{self.file_extension}")
         else:
-            raise FileNotFoundError("This file does not exist - please cache it first")
+            raise FileNotFoundError(
+                f"This {filename} does not exist - please cache it first"
+            )
 
     def _archive_data(self, filename: str) -> None:
+        """Moves file from data- to archive folder and adds date of archiving."""
         if not os.path.isdir(self.archive_folder):
             os.makedirs(self.archive_folder)
 
@@ -42,10 +71,10 @@ class DataFrameFileCache:
             ),
         )
 
-    def _check_if_file_already_exists(self, filename: str) -> bool:
+    def _file_already_exists(self, filename: str) -> bool:
         return os.path.isfile(f"{self.data_folder}/{filename}.{self.file_extension}")
 
-    def _is_timedout(self, filename: str):
+    def _is_timedout(self, filename: str) -> bool:
         last_modified_date_of_file = datetime.datetime.fromtimestamp(
             os.stat(f"{self.data_folder}/{filename}.{self.file_extension}").st_mtime
         ).replace(tzinfo=datetime.timezone.utc)

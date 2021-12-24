@@ -1,5 +1,5 @@
 <script>
-import { Bar, mixins } from 'vue-chartjs';
+import { Bar, mixins } from "vue-chartjs";
 
 const { reactiveProp } = mixins;
 
@@ -7,26 +7,30 @@ export default {
   extends: Bar,
 
   mounted() {
-    this.renderChart(this.chart_data, this.options);
+    this.renderChart(this.chartData, this.options);
   },
   mixins: [reactiveProp],
 
   data: () => ({
     options: {
       scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+            gridLines: {
+              display: true,
+            },
           },
-          gridLines: {
-            display: true,
+        ],
+        xAxes: [
+          {
+            gridLines: {
+              display: false,
+            },
           },
-        }],
-        xAxes: [{
-          gridLines: {
-            display: false,
-          },
-        }],
+        ],
       },
       legend: {
         display: true,

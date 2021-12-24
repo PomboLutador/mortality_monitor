@@ -5,3 +5,4 @@
 /mortality_monitor/env*
 *egg-info
 *.png
+frontend/node_modules/*

@@ -127,7 +127,7 @@
         </h2>
         <excess_deaths_chart
           v-if="excess_deaths_request_successful"
-          :chart_data="datacollection_excess_deaths_chart"
+          :chartData="datacollection_excess_deaths_chart"
           class="mt-3"
         ></excess_deaths_chart>
       </v-col>
@@ -157,7 +157,7 @@
         </h6>
         <yearly_deaths_chart
           v-if="yearly_deaths_request_successful"
-          :chart_data="datacollection_yearly_deaths_chart"
+          :chartData="datacollection_yearly_deaths_chart"
         ></yearly_deaths_chart>
       </v-col>
       <v-col cols="1"> </v-col>
@@ -166,12 +166,12 @@
 </template>
 
 <script>
-import axios from 'axios';
-import excess_deaths_chart from './excess_deaths_chart.vue';
-import yearly_deaths_chart from './yearly_deaths_chart.vue';
+import axios from "axios";
+import excess_deaths_chart from "./excess_deaths_chart.vue";
+import yearly_deaths_chart from "./yearly_deaths_chart.vue";
 
 export default {
-  name: 'home_page',
+  name: "home_page",
 
   data: () => ({
     // Query flags
@@ -184,8 +184,8 @@ export default {
     // UI selections
     calendar_week_selection: 53,
     year_selection: null,
-    country_selection: '',
-    age_groups_selection: '',
+    country_selection: "",
+    age_groups_selection: "",
 
     // UI options
     calendar_week_options: Array.from({ length: 53 }, (x, i) => i + 1),
@@ -206,7 +206,7 @@ export default {
 
   mounted() {
     // Get available geos
-    const available_geos_url = 'http://<placeholder>/available_geos';
+    const available_geos_url = "http://<placeholder>/available_geos";
     axios
       .get(available_geos_url, {})
       .then((res) => {
@@ -218,7 +218,7 @@ export default {
       });
 
     // Get available age groups
-    const available_ages_url = 'http://<placeholder>/available_ages';
+    const available_ages_url = "http://<placeholder>/available_ages";
     axios
       .get(available_ages_url, {})
       .then((res) => {
@@ -233,7 +233,7 @@ export default {
       });
 
     // Get available years
-    const available_years_url = 'http://<placeholder>/available_years';
+    const available_years_url = "http://<placeholder>/available_years";
     axios
       .get(available_years_url, {})
       .then((res) => {
@@ -246,7 +246,7 @@ export default {
   },
   methods: {
     get_excess_deaths_data(geo_choice, age_choices, year_choice) {
-      const backend_url = 'http://<placeholder>/excess_deaths';
+      const backend_url = "http://<placeholder>/excess_deaths";
       axios
         .post(backend_url, {
           geo: geo_choice,
@@ -264,31 +264,31 @@ export default {
             labels: this.labels,
             datasets: [
               {
-                pointBackgroundColor: '#000000',
-                pointBorderColor: '#000000',
+                pointBackgroundColor: "#000000",
+                pointBorderColor: "#000000",
                 borderWidth: 1,
                 pointRadius: 1,
-                type: 'line',
-                backgroundColor: '#000000',
-                borderColor: '#000000',
-                label: 'Expected deaths',
+                type: "line",
+                backgroundColor: "#000000",
+                borderColor: "#000000",
+                label: "Expected deaths",
                 data: this.expected_deaths,
                 fill: false,
                 lineTension: 0,
               },
               {
-                backgroundColor: '#F44336',
-                label: 'Excess deaths',
+                backgroundColor: "#F44336",
+                label: "Excess deaths",
                 data: this.above_expectation_deaths,
               },
               {
-                backgroundColor: '#4CAF50',
-                label: 'Below expectation deaths',
+                backgroundColor: "#4CAF50",
+                label: "Below expectation deaths",
                 data: this.below_expectation_deaths,
               },
               {
-                backgroundColor: '#1A237E',
-                label: 'Actual deaths',
+                backgroundColor: "#1A237E",
+                label: "Actual deaths",
                 data: this.deaths,
               },
             ],
@@ -297,7 +297,7 @@ export default {
       this.excess_deaths_request_successful = true;
     },
     get_yearly_deaths_data(geo_choice, age_choices, year_choice, max_week) {
-      const backend_url = 'http://<placeholder>/yearly_deaths';
+      const backend_url = "http://<placeholder>/yearly_deaths";
       axios
         .post(backend_url, {
           geo: geo_choice,
@@ -313,8 +313,8 @@ export default {
             labels: this.labels,
             datasets: [
               {
-                backgroundColor: '#1A237E',
-                label: 'Yearly deaths',
+                backgroundColor: "#1A237E",
+                label: "Yearly deaths",
                 data: this.actual_deaths,
               },
             ],

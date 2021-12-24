@@ -1,13 +1,7 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="indigo darken-1"
-      dark
-    >
-      <h2>
-      Mortality Monitor
-      </h2>
+    <v-app-bar app color="indigo darken-1" dark>
+      <h2>Mortality Monitor</h2>
       <v-spacer></v-spacer>
       <v-btn
         href="https://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_mweek3&lang=en"
@@ -27,18 +21,18 @@
       </v-btn>
     </v-app-bar>
     <v-main>
-      <Homepage/>
+      <home_page />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Homepage from './components/Homepage.vue';
+import home_page from './components/home_page.vue';
 
 export default {
   name: 'App',
   components: {
-    Homepage,
+    home_page,
   },
 };
 </script>

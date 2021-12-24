@@ -87,21 +87,30 @@
       </v-col>
       <v-col cols="1"> </v-col>
       <v-col class="mb-4" cols="7">
-        <h1 v-if="available_geos_query_is_successful == null">
+        <h1 v-if="
+          (available_geos_query_is_successful == null) && 
+          (available_ages_query_is_successful == null) && 
+          (available_years_query_is_successful == null)">
           Please wait while the data is being fetched
         </h1>
-        <v-overlay v-if="available_geos_query_is_successful == null"></v-overlay>
+        <v-overlay v-if="
+          (available_geos_query_is_successful == null) && 
+          (available_ages_query_is_successful == null) && 
+          (available_years_query_is_successful == null)"></v-overlay>
         <v-progress-linear
           indeterminate
           color="primary"
-          v-if="available_geos_query_is_successful == null"
+          v-if="
+            (available_geos_query_is_successful == null) && 
+            (available_ages_query_is_successful == null) && 
+            (available_years_query_is_successful == null)"
         ></v-progress-linear>
         <h2 v-if="excess_deaths_request_successful" class="font-weight-bold mb-3 text-center">
           All-cause mortality chart for country {{ country_selection }}
         </h2>
         <excess_deaths_chart
           v-if="excess_deaths_request_successful"
-          :chartData="datacollection_excess_deaths_chart"
+          :chart_data="datacollection_excess_deaths_chart"
           class="mt-3"
         ></excess_deaths_chart>
       </v-col>
@@ -121,7 +130,7 @@
         </h6>
         <yearly_deaths_chart
           v-if="yearly_deaths_request_successful"
-          :chartData="datacollection_yearly_deaths_chart"
+          :chart_data="datacollection_yearly_deaths_chart"
         ></yearly_deaths_chart>
       </v-col>
       <v-col cols="1"> </v-col>
@@ -146,13 +155,13 @@ export default {
     available_years_query_is_successful: null,
 
     // UI selections
-    calendar_week_selection: 52,
+    calendar_week_selection: 53,
     year_selection: null,
     country_selection: "",
     age_groups_selection: "",
 
     // UI options
-    calendar_week_options: Array.from({ length: 52 }, (x, i) => i + 1),
+    calendar_week_options: Array.from({ length: 53 }, (x, i) => i + 1),
     geo_options: [],
     available_age_groups: {},
     available_years: [],
@@ -208,7 +217,6 @@ export default {
         console.error(error);
       });
   },
-  // };
   methods: {
     get_excess_deaths_data(geo_choice, age_choices, year_choice) {
       const backend_url = "http://<placeholder>/excess_deaths";
@@ -220,15 +228,14 @@ export default {
           },
         )
         .then((res) => {
-          this.labels = res.data.weekly_data.label;
-          this.years = res.data.weekly_data.year;
-          this.deaths = res.data.weekly_data.deaths;
-          this.excess_deaths = res.data.weekly_data.excess_deaths;
-          this.expected_deaths = res.data.weekly_data.expected_deaths;
+          this.labels = res.data.label;
+          this.deaths = res.data.deaths;
+          this.excess_deaths = res.data.excess_deaths;
+          this.expected_deaths = res.data.expected_deaths;
           this.above_expectation_deaths =
-            res.data.weekly_data.above_expectation_deaths;
+            res.data.above_expectation_deaths;
           this.below_expectation_deaths =
-            res.data.weekly_data.below_expectation_deaths;
+            res.data.below_expectation_deaths;
           this.datacollection_excess_deaths_chart = {
             labels: this.labels,
             datasets: [

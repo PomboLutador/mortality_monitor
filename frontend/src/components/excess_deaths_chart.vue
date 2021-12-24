@@ -1,15 +1,12 @@
 <script>
 import { Bar, mixins } from 'vue-chartjs';
-import zoom from 'chartjs-plugin-zoom';
-
 const { reactiveProp } = mixins;
 
 export default {
   extends: Bar,
 
   mounted() {
-    this.addPlugin(zoom);
-    this.renderChart(this.chartData, this.options);
+    this.renderChart(this.chart_data, this.options);
   },
   mixins: [reactiveProp],
 

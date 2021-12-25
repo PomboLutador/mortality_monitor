@@ -9,7 +9,7 @@
   - [Number of considered lookback years](#number-of-considered-lookback-years)
     - [Case study: Poland](#case-study-poland)
     - [Case study: Sweden](#case-study-sweden)
-  - [Miscellaneous](#miscellaneous)
+- [Miscellaneous](#miscellaneous)
 
 
 This application visualizes all-cause mortality on a weekly basis for all countries and age groups found in the Eurostat [**demo_r_mweek3**](https://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_mweek3&lang=en) table. It also computes an expected value with a sample 'past average plus growth' model  which allows to visualize excess deaths as well.
@@ -80,7 +80,7 @@ The blue- and red line start to noticeably diverge midway through the dataset. O
 
 ![Actual- and predicted deaths in Sweden from 2000-2021](plots/Sweden.png)
 
-## Miscellaneous
+# Miscellaneous
 
 - There are util shell scripts to format and lint the code which can be run via `bash bin/format.sh` and `bash bin/lint.sh` respectively.
 - Tests are run by running `pytest`.

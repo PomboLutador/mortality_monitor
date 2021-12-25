@@ -13,7 +13,7 @@ _STANDARD_DEVIATION_PRECISION = 1
 
 
 def get_expected_deaths(deaths: pd.Series, lookback_years: int = 3) -> pd.Series:
-    """Gets expected deaths per million.
+    """Gets expected deaths based on prior actual deaths.
 
     A prediction for a given period is computed as follows:
         - Get observations 1 year prior, 2 years prior, etc. for each lookback year.

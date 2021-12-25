@@ -46,13 +46,13 @@ Currently the value for `num_lookback_years` is set to 3 due to a small analysis
 
 Consider for example the graph of expected (and actual) deaths for `Poland` (split into age groups `65+` and `<65`):
 
-![Actual- and predicted deaths in Poland from 2000-2021](plots/plot_Poland_only_3_years_for_growth_fit.png)
+![Actual- and predicted deaths in Poland from 2000-2021](plots/Poland_all_prior_years.png)
 
 Especially towards the end the model cannot adjust to rising numbers for the `65+` age group because it has to consider all values in the past. Expected deaths is thus underforecasted.
 
 The same plot, but considering only the past 3 prior years looks as follows:
 
-![Actual- and predicted deaths in Poland from 2000-2021](plots/plot_Poland.png)
+![Actual- and predicted deaths in Poland from 2000-2021](plots/Poland.png)
 
 The model is much better at adjusting and thus does not massively underforecast towards the end.
 
@@ -60,8 +60,8 @@ The model is much better at adjusting and thus does not massively underforecast 
 
 A similar picture can be seen for Sweden but in the `<65` age group:
 
-![Actual- and predicted deaths in Sweden from 2000-2021](plots/plot_Sweden_only_3_years_for_growth_fit.png)
+![Actual- and predicted deaths in Sweden from 2000-2021](plots/Sweden_all_prior_years.png)
 
 The blue- and red line start to noticeably diverge midway through the dataset. Only looking at the past 3 years solves this issue while keeping the prediction for the `65+` age group intact:
 
-![Actual- and predicted deaths in Sweden from 2000-2021](plots/plot_Sweden.png)
+![Actual- and predicted deaths in Sweden from 2000-2021](plots/Sweden.png)

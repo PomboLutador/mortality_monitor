@@ -21,16 +21,16 @@ def get_deaths(
     geo: str,
     ages: tuple[str, ...],
 ) -> pd.Series:
-    """Gets aggregated deaths.
+    """Gets weekly deaths aggregated over all ages for a specific geo.
 
     Args:
         mortality_data: Table containing deaths per geo, age and weekly period.
-        geo: Region for which to get aggregated deaths per million.
-        ages: Ages for which to get aggregated deaths per million. Of the form
+        geo: Region for which to get aggregated deaths.
+        ages: Ages for which to get aggregated deaths. Of the form
             'Y35-39', 'Y-40-44', etc. with the exception of 'Y_LT5' and 'Y_GT90'.
 
     Returns:
-        Table containing deaths for each period for the chosen geo and age groups.
+        Table containing deaths per period for the chosen geo and age groups.
     """
     return (
         mortality_data.reset_index()
@@ -45,7 +45,7 @@ def get_deaths_per_million(
     geo: str,
     ages: tuple[str, ...],
 ) -> pd.Series:
-    """Gets aggregated deaths per million.
+    """Gets weekly deaths per million aggregated over all ages for a specific geo.
 
     Args:
         mortality_data: Table containing deaths per geo, age and weekly period.
@@ -56,7 +56,7 @@ def get_deaths_per_million(
             'Y35-39', 'Y-40-44', etc. with the exception of 'Y_LT5' and 'Y_GT90'.
 
     Returns:
-        Table containing deaths per million for each period for the chosen geo and age
+        Table containing deaths per million per period for the chosen geo and age
         groups.
     """
     return (

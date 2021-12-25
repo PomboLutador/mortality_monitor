@@ -20,13 +20,13 @@ The application can be accessed here: https://pombolutador.github.io/
 
 # Installation
 
-The application is divided into a small small  `flask` server which provides the VueJS frontend with data. 
+The application is divided into a small `flask` server which provides the VueJS frontend with data. 
 
 ## Backend
 To install the backend follow the following steps:
 
 - Run `bash bin/create_environment.sh`. Python 3.8 should be installed, as well as the  `virtualenv` package.
-- Run `source bin/install_dependencies.sh`. This will install all development dependencies (such as formatters, linters and pytest) as well. Note that it has to be run via `source` and not `bash`, otherwise the packages won't be installed into the virtual envrionment.
+- Run `source bin/install_dependencies.sh`. This will install all development dependencies (such as formatters, linters and pytest) as well. Note that it has to be run via `source` and not `bash`, otherwise the packages won't be installed into the virtual environment.
 
 ## Frontend
 
@@ -42,11 +42,11 @@ NodeJS needs to be installed on the system.
 
 # Methodology for expected deaths
 
-Let `p_t` be a period for which we want to predict an expected deaths value. Actual deaths prior to `p_t`are considered. 
+Let p<sub>t</sub> be a period for which we want to predict an expected deaths value. Actual deaths prior to p<sub>t</sub> are considered. 
 
-The model will retrieve `num_lookback_years` by looking up values at `p_t-52 weeks`, `p_t-2*52 weeks`, ... etc. Outliers are removed from these values by calculating lower- and upper bounds via `mean +- standard deviation`. The average of these `num_lookback_years` values is the base of the prediction.
+The model will retrieve `num_lookback_years` by looking up values at p<sub>t</sub>-`52` weeks, p<sub>t</sub>-`2*52` weeks, ... etc. Outliers are removed from these values by calculating lower- and upper bounds via `mean +- standard deviation`. The average of these `num_lookback_years` values is the base of the prediction.
 
-The growth component is added by retrieving (at least two and up to) `num_lookback_years` yearly sums. These are retrieved by summing up all values between `p_t-2*52 weeks` and `p_t-52 weeks`, `p_t-3*52 weeks` and `p_t-2*52 weeks` and so forth. A linear regression is fitted through these values and extrapolated to the year of `p_t`. The extrapolated value is normalized w.r.t. the first lookback year's sum to arrive at a prediction for the growth. This is applied to the base value computed above:
+The growth component is added by retrieving (at least two and up to) `num_lookback_years` yearly sums. These are retrieved by summing up all values between p<sub>t</sub>-`2*52` weeks and p<sub>t</sub>-`52` weeks, p<sub>t</sub>-`3*52` weeks and p<sub>t</sub>-`2*52` weeks and so forth. A linear regression is fitted through these values and extrapolated to the year of p<sub>t</sub>. The extrapolated value is normalized w.r.t. the first lookback year's sum to arrive at a prediction for the growth. This is applied to the base value computed above:
 
 `Prediction(p_t) ~ mean(lookback_values)*yearly_growth`
 
@@ -54,7 +54,7 @@ Note that the model thus has an effective forecasting horizon of 52 weeks. This 
 
 ## Number of considered lookback years
 
-Currently the value for `num_lookback_years` is set to 3 due to a small analysis that was done studying the model.Prior to setting the value to 3 all prior available lookback years were considered. This often lead to the model becoming too inflexible and not being able to adjust to new trends. 
+Currently the value for `num_lookback_years` is set to 3 due to a small analysis that was done studying the model. Prior to setting the value to 3, all prior available lookback years were considered. This often lead to the model becoming too inflexible and not being able to adjust to new trends. 
 
 ### Case study: Poland
 

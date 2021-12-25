@@ -9,9 +9,12 @@
   - [Number of considered lookback years](#number-of-considered-lookback-years)
     - [Case study: Poland](#case-study-poland)
     - [Case study: Sweden](#case-study-sweden)
+  - [Miscellaneous](#miscellaneous)
 
 
 This application visualizes all-cause mortality on a weekly basis for all countries and age groups found in the Eurostat [**demo_r_mweek3**](https://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_mweek3&lang=en) table. It also computes an expected value with a sample 'past average plus growth' model  which allows to visualize excess deaths as well.
+
+The application gets new data once a day directly from Eurostat.
 
 The application can be accessed here: https://pombolutador.github.io/
 
@@ -22,8 +25,8 @@ The application is divided into a small small  `flask` server which provides the
 ## Backend
 To install the backend follow the following steps:
 
-- Run the bash script in  `mortality_monitor/bin/create_environment.sh`. Python 3.8 should be installed, as well as the  `virtualenv` package.
-- Run `mortality_monitor/bin/install_dependencies.sh`. This will install all development dependencies (such as formatters, linters and pytest) as well.
+- Run `bash bin/create_environment.sh`. Python 3.8 should be installed, as well as the  `virtualenv` package.
+- Run `source bin/install_dependencies.sh`. This will install all development dependencies (such as formatters, linters and pytest) as well. Note that it has to be run via `source` and not `bash`, otherwise the packages won't be installed into the virtual envrionment.
 
 ## Frontend
 
@@ -76,3 +79,8 @@ A similar picture can be seen for Sweden but in the `<65` age group:
 The blue- and red line start to noticeably diverge midway through the dataset. Only looking at the past 3 years solves this issue while keeping the prediction for the `65+` age group intact:
 
 ![Actual- and predicted deaths in Sweden from 2000-2021](plots/Sweden.png)
+
+## Miscellaneous
+
+- There are util shell scripts to format and lint the code which can be run via `bash bin/format.sh` and `bash bin/lint.sh` respectively.
+- Tests are run by running `pytest`.

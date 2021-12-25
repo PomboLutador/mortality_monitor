@@ -1,5 +1,14 @@
 # Mortality Monitor
 
+- [Mortality Monitor](#mortality-monitor)
+- [Installation](#installation)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+- [Running the application locally](#running-the-application-locally)
+- [Methodology for expected deaths](#methodology-for-expected-deaths)
+  - [Number of considered lookback years](#number-of-considered-lookback-years)
+    - [Poland](#poland)
+    - [Sweden](#sweden)
 This application visualizes all-cause mortality on a weekly basis for all countries and age groups found in the Eurostat [**demo_r_mweek3**](https://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_mweek3&lang=en) table. It also computes an expected value with a sample 'past average plus growth' model  which allows to visualize excess deaths as well.
 
 The application can be accessed here: https://pombolutador.github.io/

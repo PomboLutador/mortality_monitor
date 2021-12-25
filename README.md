@@ -7,8 +7,8 @@
 - [Running the application locally](#running-the-application-locally)
 - [Methodology for expected deaths](#methodology-for-expected-deaths)
   - [Number of considered lookback years](#number-of-considered-lookback-years)
-    - [Poland](#poland)
-    - [Sweden](#sweden)
+    - [Case study: Poland](#case-study-poland)
+    - [Case study: Sweden](#case-study-sweden)
 
 
 This application visualizes all-cause mortality on a weekly basis for all countries and age groups found in the Eurostat [**demo_r_mweek3**](https://appsso.eurostat.ec.europa.eu/nui/show.do?dataset=demo_r_mweek3&lang=en) table. It also computes an expected value with a sample 'past average plus growth' model  which allows to visualize excess deaths as well.
@@ -53,7 +53,7 @@ Note that the model thus has an effective forecasting horizon of 52 weeks. This 
 
 Currently the value for `num_lookback_years` is set to 3 due to a small analysis that was done studying the model.Prior to setting the value to 3 all prior available lookback years were considered. This often lead to the model becoming too inflexible and not being able to adjust to new trends. 
 
-### Poland
+### Case study: Poland
 
 Consider for example the graph of expected (and actual) deaths for `Poland` (split into age groups `65+` and `<65`):
 
@@ -67,7 +67,7 @@ The same plot, but considering only the past 3 prior years looks as follows:
 
 The model is much better at adjusting and thus does not massively underforecast towards the end.
 
-### Sweden
+### Case study: Sweden
 
 A similar picture can be seen for Sweden but in the `<65` age group:
 

@@ -4,5 +4,5 @@
 *__pycache__
 /mortality_monitor/env*
 *egg-info
-*.png
+plots/plot_*
 frontend/node_modules/*

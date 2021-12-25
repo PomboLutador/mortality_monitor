@@ -1,7 +1,4 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
-name: Run tests
+name: Check formatting, lint and test
 
 on:
   push:
@@ -23,17 +20,17 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f mortality_monitor/requirements.txt ]; then pip install -r mortality_monitor/requirements.txt; fi
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Check formatting with isort and black
       run: |
-        isort mortality_monitor/. --check-only && black mortality_monitor/. --check
+        isort . --check-only && black . --check
     - name: Lint with flake8
       run: |
         # stop the build if there are any flake8 issues
-        flake8 mortality_monitor/. --count --show-source --statistics --extend-ignore=F541,E203 --max-line-length=88
+        flake8 . --count --show-source --statistics --extend-ignore=F541,E203 --max-line-length=88
     - name: Type check with mypy
       run: |
-        mypy mortality_monitor/.
+        mypy .
     - name: Run tests
       run: |
         pip install pytest

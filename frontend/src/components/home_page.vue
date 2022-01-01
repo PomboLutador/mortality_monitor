@@ -86,6 +86,8 @@
           starting from <b>p - 104 weeks</b> to <b>p - 52 weeks</b>. The growth
           of that linear regression is applied to the above calculated mean of
           previous observations to arrive at the expectation value for <b>p</b>.
+          The moving average over 4 weeks is computed to smooth out the
+          resulting expected deaths time series.
           <br />
           <br />
           The model to compute the epxected deaths thus has an effective

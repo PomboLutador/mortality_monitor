@@ -75,8 +75,11 @@ def excess_deaths():
             geo=user_input[GEO_COLUMN],
             ages=user_input[AGE_COLUMN],
         )
-        expected_deaths = get_expected_deaths(deaths=deaths).pipe(
-            _filter_on_year, year=user_input[YEAR]
+        expected_deaths = (
+            get_expected_deaths(deaths=deaths)
+            .rolling(window=4)
+            .mean()
+            .pipe(_filter_on_year, year=user_input[YEAR])
         )
         deaths = deaths.pipe(_filter_on_year, year=user_input[YEAR])
 

@@ -1,21 +1,24 @@
 from __future__ import annotations
 
+from collections import OrderedDict
+
 import pandas as pd
 
 FROM, TO = (tuple(i for i in range(5, 90, 5)), tuple(i + 4 for i in range(5, 90, 5)))
 
-QUERY_AGE_TO_DATA_AGE = {
-    "Y_LT5": "Less than 5 years",
-    **{
-        f"Y{start}-{end}": f"From {start} to {end} years"
-        for start, end in zip(FROM, TO)
-    },
-    "Y_GE90": "90 years or over",
-}
+QUERY_AGES = (
+    ("Y_LT5",) + tuple(f"Y{start}-{end}" for start, end in zip(FROM, TO)) + ("Y_GE90",)
+)
+DATA_AGES = (
+    ("Less than 5 years",)
+    + tuple(f"From {start} to {end} years" for start, end in zip(FROM, TO))
+    + ("90 years or over",)
+)
+QUERY_AGE_TO_DATA_AGE = OrderedDict(zip(QUERY_AGES, DATA_AGES))
 
 
 def get_all_age_groups_for_query() -> tuple[str, ...]:
-    return tuple(QUERY_AGE_TO_DATA_AGE.keys())
+    return tuple(QUERY_AGES)
 
 
 def get_data_age(query_age: str) -> str:

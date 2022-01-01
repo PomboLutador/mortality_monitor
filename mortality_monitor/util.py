@@ -30,5 +30,5 @@ def read_csv_with_weekly_period(path: str) -> pd.DataFrame:
     return pd.read_csv(path).assign(
         period=lambda df: pd.to_datetime(
             df["period"].str.split("/", expand=True)[1]
-        ).dt.to_period(freq="W")
+        ).dt.to_period(freq="W-MON")
     )

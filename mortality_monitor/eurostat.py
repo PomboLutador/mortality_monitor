@@ -21,7 +21,7 @@ _BASE_URL = "http://ec.europa.eu/eurostat/wdds/rest/data/v2.1/json/en"
 _PRECISION = "1"
 _UNIT = "NR"
 _SEX = "T"
-_WEEKDAY = "0"
+_WEEKDAY = "1"
 
 _UNIT_COLUMN = "unit"
 _SEX_COLUMN = "sex"
@@ -157,7 +157,7 @@ def _create_weekly_period(
                 PERIOD_COLUMN: lambda df: pd.to_datetime(
                     df[_TIME_COLUMN].str.replace(split_character, "-") + f"-{_WEEKDAY}",
                     format=time_format,
-                ).dt.to_period(freq="W")
+                ).dt.to_period(freq="W-MON")
             }
         )
         .set_index(PERIOD_COLUMN)

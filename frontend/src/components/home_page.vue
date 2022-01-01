@@ -258,7 +258,6 @@ export default {
         .then((res) => {
           this.labels = res.data.label;
           this.deaths = res.data.deaths;
-          this.excess_deaths = res.data.excess_deaths;
           this.expected_deaths = res.data.expected_deaths;
           this.above_expectation_deaths = res.data.above_expectation_deaths;
           this.below_expectation_deaths = res.data.below_expectation_deaths;
@@ -268,7 +267,7 @@ export default {
               {
                 pointBackgroundColor: "#000000",
                 pointBorderColor: "#000000",
-                borderWidth: 1,
+                borderWidth: 2,
                 pointRadius: 1,
                 type: "line",
                 backgroundColor: "#000000",
@@ -279,9 +278,9 @@ export default {
                 lineTension: 0,
               },
               {
-                backgroundColor: "#F44336",
-                label: "Excess deaths",
-                data: this.above_expectation_deaths,
+                backgroundColor: "#1A237E",
+                label: "Actual deaths up to expected",
+                data: this.deaths,
               },
               {
                 backgroundColor: "#4CAF50",
@@ -289,9 +288,9 @@ export default {
                 data: this.below_expectation_deaths,
               },
               {
-                backgroundColor: "#1A237E",
-                label: "Actual deaths",
-                data: this.deaths,
+                backgroundColor: "#F44336",
+                label: "Excess deaths",
+                data: this.above_expectation_deaths,
               },
             ],
           };

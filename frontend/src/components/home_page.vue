@@ -125,7 +125,7 @@
           v-if="excess_deaths_request_successful"
           class="font-weight-bold mb-3 text-center"
         >
-          All-cause mortality chart for country {{ country_selection }}
+          Weekly all-cause mortality for country {{ country_selection }}
         </h2>
         <excess_deaths_chart
           v-if="excess_deaths_request_successful"
@@ -192,7 +192,7 @@ export default {
     // UI options
     calendar_week_options: Array.from({ length: 53 }, (x, i) => i + 1),
     geo_options: [],
-    available_age_groups: {},
+    available_age_groups: [],
     available_years: [],
 
     // Chart data

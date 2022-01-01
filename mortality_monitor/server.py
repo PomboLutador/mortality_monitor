@@ -75,31 +75,30 @@ def excess_deaths():
             geo=user_input[GEO_COLUMN],
             ages=user_input[AGE_COLUMN],
         )
-        expected_deaths = get_expected_deaths(deaths=deaths).pipe(
-            _filter_on_year, year=user_input[YEAR]
+        expected_deaths = (
+            get_expected_deaths(deaths=deaths)
+            .rolling(window=4)
+            .mean()
+            .pipe(_filter_on_year, year=user_input[YEAR])
         )
         deaths = deaths.pipe(_filter_on_year, year=user_input[YEAR])
-
-        excess_deaths = deaths - expected_deaths
         periods = deaths.index
 
-        above_expectation_deaths = [
-            -np.abs(value) if (value > 0) else 0
-            for value in excess_deaths.values.round().tolist()
-        ]
-        below_expectation_deaths = [
-            -np.abs(value) if (value <= 0) else 0
-            for value in excess_deaths.values.round().tolist()
-        ]
+        above_expectation_deaths = np.where(
+            deaths > expected_deaths, deaths - expected_deaths, 0
+        )
+        below_expectation_deaths = np.where(
+            deaths <= expected_deaths, expected_deaths - deaths, 0
+        )
+        deaths = np.where(deaths < expected_deaths, deaths, expected_deaths)
 
         return jsonify(
             {
-                "deaths": deaths.values.round().tolist(),
+                "deaths": deaths.round().tolist(),
                 "label": [f"{period.year}/{period.week}" for period in periods],
-                "excess_deaths": excess_deaths.values.round().tolist(),
-                "expected_deaths": expected_deaths.values.round().tolist(),
-                "above_expectation_deaths": above_expectation_deaths,
-                "below_expectation_deaths": below_expectation_deaths,
+                "expected_deaths": expected_deaths.round().tolist(),
+                "above_expectation_deaths": above_expectation_deaths.round().tolist(),
+                "below_expectation_deaths": below_expectation_deaths.round().tolist(),
             }
         )
 

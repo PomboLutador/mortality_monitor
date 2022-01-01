@@ -86,6 +86,8 @@
           starting from <b>p - 104 weeks</b> to <b>p - 52 weeks</b>. The growth
           of that linear regression is applied to the above calculated mean of
           previous observations to arrive at the expectation value for <b>p</b>.
+          The moving average over 4 weeks is computed to smooth out the
+          resulting expected deaths time series.
           <br />
           <br />
           The model to compute the epxected deaths thus has an effective
@@ -123,7 +125,7 @@
           v-if="excess_deaths_request_successful"
           class="font-weight-bold mb-3 text-center"
         >
-          All-cause mortality chart for country {{ country_selection }}
+          Weekly all-cause mortality for country {{ country_selection }}
         </h2>
         <excess_deaths_chart
           v-if="excess_deaths_request_successful"
@@ -190,7 +192,7 @@ export default {
     // UI options
     calendar_week_options: Array.from({ length: 53 }, (x, i) => i + 1),
     geo_options: [],
-    available_age_groups: {},
+    available_age_groups: [],
     available_years: [],
 
     // Chart data
@@ -256,7 +258,6 @@ export default {
         .then((res) => {
           this.labels = res.data.label;
           this.deaths = res.data.deaths;
-          this.excess_deaths = res.data.excess_deaths;
           this.expected_deaths = res.data.expected_deaths;
           this.above_expectation_deaths = res.data.above_expectation_deaths;
           this.below_expectation_deaths = res.data.below_expectation_deaths;
@@ -266,7 +267,7 @@ export default {
               {
                 pointBackgroundColor: "#000000",
                 pointBorderColor: "#000000",
-                borderWidth: 1,
+                borderWidth: 2,
                 pointRadius: 1,
                 type: "line",
                 backgroundColor: "#000000",
@@ -277,9 +278,9 @@ export default {
                 lineTension: 0,
               },
               {
-                backgroundColor: "#F44336",
-                label: "Excess deaths",
-                data: this.above_expectation_deaths,
+                backgroundColor: "#1A237E",
+                label: "Actual deaths up to expected",
+                data: this.deaths,
               },
               {
                 backgroundColor: "#4CAF50",
@@ -287,9 +288,9 @@ export default {
                 data: this.below_expectation_deaths,
               },
               {
-                backgroundColor: "#1A237E",
-                label: "Actual deaths",
-                data: this.deaths,
+                backgroundColor: "#F44336",
+                label: "Excess deaths",
+                data: this.above_expectation_deaths,
               },
             ],
           };

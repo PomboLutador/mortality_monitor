@@ -22,6 +22,7 @@ export default {
             gridLines: {
               display: true,
             },
+            stacked: true,
           },
         ],
         xAxes: [
@@ -29,6 +30,7 @@ export default {
             gridLines: {
               display: false,
             },
+            stacked: true,
           },
         ],
       },

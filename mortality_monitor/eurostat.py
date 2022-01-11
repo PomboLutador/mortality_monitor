@@ -60,12 +60,19 @@ def get_mortality_data(
 
 def _preprocess_mortality_data(data: pd.DataFrame) -> pd.DataFrame:
     return (
-        data.drop(columns=[_UNIT_COLUMN, _SEX_COLUMN])
+        data.pipe(_drop_week_99_rows)
+        .drop(columns=[_UNIT_COLUMN, _SEX_COLUMN])
         .pipe(_create_weekly_period)
         .set_index([GEO_COLUMN, AGE_COLUMN], append=True)
         .dropna()
         .rename(columns={_VALUE_COLUMN: DEATHS_COLUMN})
     )
+
+
+def _drop_week_99_rows(data: pd.DataFrame) -> pd.DataFrame:
+    data = data.copy()
+    data["week"] = data[_TIME_COLUMN].str.split("W", expand=True)[1]
+    return data.loc[data["week"] != "99"]
 
 
 def get_population_data(

@@ -95,7 +95,9 @@ def excess_deaths():
         return jsonify(
             {
                 "deaths": deaths.round().tolist(),
-                "label": [f"{period.year}/{period.week}" for period in periods],
+                "label": [
+                    f"{period.start_time.year}/{period.week}" for period in periods
+                ],
                 "expected_deaths": expected_deaths.round().tolist(),
                 "above_expectation_deaths": above_expectation_deaths.round().tolist(),
                 "below_expectation_deaths": below_expectation_deaths.round().tolist(),

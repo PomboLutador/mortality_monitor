@@ -69,7 +69,7 @@
       </v-col>
       <v-col cols="5"></v-col>
     </v-row>
-    <v-row class="text-left">
+    <v-row>
       <v-col class="mb-4" cols="12">
         <h1
           v-if="
@@ -77,6 +77,7 @@
             available_ages_query_is_successful == null &&
             available_years_query_is_successful == null
           "
+          class="text-center"
         >
           Please wait while the data is being fetched
         </h1>

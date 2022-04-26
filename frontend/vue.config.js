@@ -6,5 +6,6 @@ module.exports = {
                 args[0].title = "Mortality Monitor";
                 return args;
             })
-    }
+    },
+    runtimeCompiler: true,
 }

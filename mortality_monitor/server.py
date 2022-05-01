@@ -95,9 +95,7 @@ def excess_deaths():
         return jsonify(
             {
                 "deaths": deaths.round().tolist(),
-                "label": [
-                    f"{period.start_time.year}/{period.week}" for period in periods
-                ],
+                "label": [_get_period_representation(period) for period in periods],
                 "expected_deaths": expected_deaths.round().tolist(),
                 "above_expectation_deaths": above_expectation_deaths.round().tolist(),
                 "below_expectation_deaths": below_expectation_deaths.round().tolist(),
@@ -144,6 +142,18 @@ def _filter_on_year(data: pd.Series, year: int) -> pd.Series:
         .query("year >= @year")
         .drop(columns=[YEAR])
         .set_index(PERIOD_COLUMN)[column_name]
+    )
+
+
+def _get_period_representation(p: pd.Period) -> str:
+    if p.start_time.year == p.end_time.year:
+        return f"{p.start_time.year}/{p.week}"
+    elif p.week == 1:
+        return f"{p.end_time.year}/{p.week}"
+    elif p.week >= 52:
+        return f"{p.start_time.year}/{p.week}"
+    raise ValueError(
+        f"Period {p} has unequal start/end time years and is not in week 1, 52 or 53."
     )
 
 

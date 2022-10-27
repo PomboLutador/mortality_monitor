@@ -77,7 +77,7 @@ class DataFrameFileCache:
     def _is_timedout(self, filename: str) -> bool:
         last_modified_date_of_file = datetime.datetime.fromtimestamp(
             os.stat(f"{self.data_folder}/{filename}.{self.file_extension}").st_mtime
-        ).replace(tzinfo=datetime.timezone.utc)
-        return (
-            datetime.datetime.now(datetime.timezone.utc) - last_modified_date_of_file
-        ) > (datetime.timedelta(hours=self.timeout_hours))
+        )
+        return (datetime.datetime.now() - last_modified_date_of_file) > (
+            datetime.timedelta(hours=self.timeout_hours)
+        )

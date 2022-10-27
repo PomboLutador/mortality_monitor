@@ -55,7 +55,7 @@ def get_expected_deaths(deaths: pd.Series, lookback_years: int = 3) -> pd.Series
             deg=1,
         )
         return (
-            mean(_get_prior_weekly_values(data=deaths, prior_periods=prior_periods))
+            np.mean(_get_prior_weekly_values(data=deaths, prior_periods=prior_periods))
             * (np.polyval(p=polyfit, x=period.year))
             / yearly_values[0]
         )

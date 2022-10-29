@@ -5,12 +5,10 @@ import vuetify from './plugins/vuetify';
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import '@mdi/font/css/materialdesignicons.css';
 import mortality_monitor from "./components/mortality_monitor.vue";
-import home from "./components/home_page.vue";
 Vue.config.productionTip = false;
 
 const routes = [
-  { path: '/', component: home },
-  { path: '/mortality_monitor', component: mortality_monitor },
+  { path: '/', component: mortality_monitor },
 
 ]
 

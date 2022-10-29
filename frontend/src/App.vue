@@ -3,30 +3,14 @@
     <v-app-bar app color="indigo darken-1" dark>
       <v-col cols="3">
         <v-row class="text-left">
-          <v-col cols="3">
-            <router-link
-              style="text-decoration: none; font-size: x-large"
-              to="/"
-            >
-              <span class="mb-4 white--text"> Home </span>
-            </router-link>
-          </v-col>
-          <v-col cols="7">
-            <router-link
-              style="text-decoration: none; font-size: x-large"
-              to="/mortality_monitor"
-            >
-              <span class="mb-4 white--text"> Mortality Monitor </span>
-            </router-link>
-          </v-col>
+          <v-col cols="3"> </v-col>
           <v-col cols="2"> </v-col>
         </v-row>
       </v-col>
       <v-col cols="5"></v-col>
       <v-col cols="4">
         <v-row class="text-right">
-          <v-col cols="3"> </v-col>
-          <v-col cols="3"></v-col>
+          <v-col cols="6"> </v-col>
           <v-col cols="5">
             <v-btn
               href="https://github.com/PomboLutador/mortality_monitor"
@@ -48,7 +32,7 @@
       app
       dark
     >
-      <div v-if="currentRoute == '/mortality_monitor'">
+      <div v-if="currentRoute == '/'">
         <h2 class="text-left px-5 mt-4 white--text">Introduction</h2>
         <p class="text-left px-5 white--text">
           This website allows tracking of all-cause mortality in various age
@@ -87,12 +71,6 @@
           Source code
           <v-icon>mdi-open-in-new</v-icon>
         </v-btn>
-      </div>
-      <div v-if="currentRoute == '/'">
-        <h2 class="text-left px-5 mt-4 white--text">Welcome!</h2>
-        <p class="text-left px-5 white--text">
-          Some text and general introduction.
-        </p>
       </div>
     </v-navigation-drawer>
     <v-main>

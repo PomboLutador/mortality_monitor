@@ -10,8 +10,7 @@
       <v-col cols="5"></v-col>
       <v-col cols="4">
         <v-row class="text-right">
-          <v-col cols="3"> </v-col>
-          <v-col cols="3"></v-col>
+          <v-col cols="6"> </v-col>
           <v-col cols="5">
             <v-btn
               href="https://github.com/PomboLutador/mortality_monitor"

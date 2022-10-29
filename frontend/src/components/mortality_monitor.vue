@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row class="text-center mt-2">
-      <v-col cols="1"></v-col>
+      <v-col cols="1"> </v-col>
       <v-col cols="3">
         <v-select
           v-model="country_selection"
@@ -63,8 +63,17 @@
             depressed
             elevation="2"
             class="font-weight-bold"
+            v-on="on"
             >Draw!
           </v-btn>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon color="primary" dark v-bind="attrs" v-on="on">
+                mdi-information
+              </v-icon> </template
+            >If the selectors do not contain any values, please wait a second or
+            try and refresh the page!
+          </v-tooltip>
         </center>
       </v-col>
       <v-col cols="5"></v-col>
@@ -79,7 +88,7 @@
           "
           class="text-center"
         >
-          Please wait while the data is being fetched
+          Please be patient while the data is being fetched
         </h1>
         <v-overlay
           v-if="
@@ -97,6 +106,17 @@
             available_years_query_is_successful == null
           "
         ></v-progress-linear>
+        <h5
+          v-if="
+            available_geos_query_is_successful == null &&
+            available_ages_query_is_successful == null &&
+            available_years_query_is_successful == null
+          "
+          class="text-center"
+        >
+          If you're the first viewer of the day, this might take a minute or
+          two!
+        </h5>
         <h2
           v-if="excess_deaths_request_successful"
           class="font-weight-bold mb-3 text-center"
@@ -157,9 +177,16 @@ export default {
 
     // UI selections
     calendar_week_selection: 53,
-    year_selection: null,
-    country_selection: "",
-    age_groups_selection: "",
+    year_selection: 2018,
+    country_selection: "Switzerland",
+    age_groups_selection: [
+      "Y65-69",
+      "Y70-74",
+      "Y75-79",
+      "Y80-84",
+      "Y85-89",
+      "Y_GE90",
+    ],
 
     // UI options
     calendar_week_options: Array.from({ length: 53 }, (x, i) => i + 1),

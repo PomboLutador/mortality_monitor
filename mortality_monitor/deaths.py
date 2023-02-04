@@ -4,6 +4,7 @@ import pandas as pd
 
 from mortality_monitor.constants import (
     AGE_COLUMN,
+    COUNTRIES,
     DEATHS_COLUMN,
     DEATHS_PER_MILLION_COLUMN,
     GEO_COLUMN,
@@ -105,8 +106,8 @@ def _aggregate_across_ages(data: pd.DataFrame, ages: tuple[str]) -> pd.DataFrame
 if __name__ == "__main__":
     AVAILABLE_AGES = ("Y35-39", "Y_LT5", "Y_GE90")
     REQUESTED_AGES = ("Y35-39", "Y_GE90")
-    mortality_data = get_mortality_data(geo="country", ages=AVAILABLE_AGES)
-    population_data = get_population_data(geo="country", ages=AVAILABLE_AGES)
+    mortality_data = get_mortality_data(geos=COUNTRIES, ages=AVAILABLE_AGES)
+    population_data = get_population_data(geos=COUNTRIES, ages=AVAILABLE_AGES)
     deaths = get_deaths_per_million(
         mortality_data=mortality_data,
         population_data=population_data,

@@ -6,13 +6,13 @@ from typing import Iterable
 import numpy as np
 import pandas as pd
 
-from mortality_monitor.constants import GEO_COLUMN
+from mortality_monitor.constants import COUNTRIES, GEO_COLUMN
 
 _1_YEAR = 52
 _STANDARD_DEVIATION_PRECISION = 1
 
 
-def get_expected_deaths(deaths: pd.Series, lookback_years: int = 3) -> pd.Series:
+def get_expected_deaths(deaths: pd.Series, lookback_years: int = 5) -> pd.Series:
     """Gets expected deaths based on prior actual deaths.
 
     A prediction for a given period is computed as follows:
@@ -137,34 +137,37 @@ if __name__ == "__main__":
     ) + ("Y_GE90",)
 
     AVAILABLE_AGES = tuple(QUERY_AGE_TO_DATA_AGE.keys())
-    mortality_data = get_mortality_data(geo="country", ages=AVAILABLE_AGES)
-    for GEO in tuple(mortality_data.reset_index()[GEO_COLUMN].unique()):
-        for AGE_GROUP in (below_65s, over_65s):
+    mortality_data = get_mortality_data(geos=COUNTRIES, ages=AVAILABLE_AGES)
+    for lookback_years in (3, 4, 5):
+        for GEO in tuple(mortality_data.reset_index()[GEO_COLUMN].unique()):
+            for AGE_GROUP in (below_65s, over_65s):
 
-            deaths = get_deaths(
-                mortality_data=mortality_data,
-                geo=GEO,
-                ages=AGE_GROUP,
-            )
-            age_string = "65+" if AGE_GROUP == over_65s else "<65"
-            print(f"Working on country {GEO} and age group {age_string}")
-            expected_deaths = get_expected_deaths(deaths=deaths)
+                deaths = get_deaths(
+                    mortality_data=mortality_data,
+                    geo=GEO,
+                    ages=AGE_GROUP,
+                )
+                age_string = "65+" if AGE_GROUP == over_65s else "<65"
+                print(f"Working on country {GEO} and age group {age_string}")
+                expected_deaths = get_expected_deaths(
+                    deaths=deaths, lookback_years=lookback_years
+                )
 
-            plt.plot(
-                [period.to_timestamp() for period in deaths.index],
-                deaths.values,
-                label=f"Actuals - {age_string}",
-                linestyle=":" if AGE_GROUP == over_65s else "--",
-                color="red",
-            )
-            plt.plot(
-                [period.to_timestamp() for period in expected_deaths.index],
-                expected_deaths.values,
-                label=f"Expected - {age_string}",
-                linestyle=":" if AGE_GROUP == over_65s else "--",
-                color="blue",
-            )
-            plt.title(f"{GEO}")
-            plt.legend(loc="best")
-        plt.savefig(f"plots/plot_{GEO}.png")
-        plt.clf()
+                plt.plot(
+                    [period.to_timestamp() for period in deaths.index],
+                    deaths.values,
+                    label=f"Actuals - {age_string}",
+                    linestyle=":" if AGE_GROUP == over_65s else "--",
+                    color="red",
+                )
+                plt.plot(
+                    [period.to_timestamp() for period in expected_deaths.index],
+                    expected_deaths.values,
+                    label=f"Expected - {age_string}",
+                    linestyle=":" if AGE_GROUP == over_65s else "--",
+                    color="blue",
+                )
+                plt.title(f"{GEO}")
+                plt.legend(loc="best")
+            plt.savefig(f"plots/2023/{GEO}_LB_YEARS_{lookback_years}.png")
+            plt.clf()

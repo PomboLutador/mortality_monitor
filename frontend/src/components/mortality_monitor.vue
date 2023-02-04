@@ -250,8 +250,8 @@ export default {
       const backend_url = "<placeholder>/excess_deaths";
       axios
         .post(backend_url, {
-          geo: geo_choice,
-          age: age_choices,
+          "Geopolitical entity (reporting)": geo_choice,
+          "Age class": age_choices,
           year: year_choice,
         })
         .then((res) => {
@@ -300,8 +300,8 @@ export default {
       const backend_url = "<placeholder>/yearly_deaths";
       axios
         .post(backend_url, {
-          geo: geo_choice,
-          age: age_choices,
+          "Geopolitical entity (reporting)": geo_choice,
+          "Age class": age_choices,
           year: year_choice,
           max_week,
         })

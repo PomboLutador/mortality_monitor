@@ -6,6 +6,7 @@ from flask_cors import CORS  # type: ignore
 from mortality_monitor.cache import DataFrameFileCache
 from mortality_monitor.constants import (
     AGE_COLUMN,
+    COUNTRIES,
     DEATHS_COLUMN,
     GEO_COLUMN,
     PERIOD_COLUMN,
@@ -36,7 +37,7 @@ try:
     )
 except OSError:
     mortality_data = get_mortality_data(
-        geo="country", ages=get_all_age_groups_for_query()
+        geos=COUNTRIES, ages=get_all_age_groups_for_query()
     )
     CACHE.put_data(data=mortality_data, filename=MORTALITY_DATA_FILENAME)
 

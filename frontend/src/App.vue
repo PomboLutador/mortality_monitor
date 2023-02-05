@@ -42,17 +42,17 @@
         <p class="text-left px-5 white--text">
           Weekly mortality data is pulled from EUROSTAT's
           <i>demo_r_mweek3</i> table. To compute expected deaths for a given
-          weekly period <b>p</b>, the average of the 3 previous datapoints with
+          weekly period <b>p</b>, the average of the 5 previous datapoints with
           the same calendar week is computed. Datapoints not within mean +-
           standard deviation are disregarded.
           <br />
           <br />
-          A linear regression is fit through the prior 3 years of yearly deaths,
-          starting from <b>p - 104 weeks</b> to <b>p - 52 weeks</b>. The growth
-          of that linear regression is applied to the above calculated mean of
-          previous observations to arrive at the expectation value for <b>p</b>.
-          The moving average over 4 weeks is computed to smooth out the
-          resulting expected deaths time series.
+          A linear regression is fit through the same 5 years of summed yearly
+          deaths, starting from <b>p - 104 weeks</b> to <b>p - 52 weeks</b>. The
+          growth of that linear regression is applied to the above calculated
+          mean of previous observations to arrive at the expectation value for
+          <b>p</b>. The moving average over 4 weeks is computed to smooth out
+          the resulting expected deaths time series.
         </p>
 
         <v-btn

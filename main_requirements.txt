@@ -1,6 +1,6 @@
 black==21.12b0
 flake8==4.0.1
-Flask==2.0.2
+flask>=2.2.5
 Flask-Cors==3.0.10
 isort==5.10.1
 mypy==0.920

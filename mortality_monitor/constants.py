@@ -4,7 +4,7 @@ PERIOD_COLUMN = "period"
 DEATHS_COLUMN = "deaths"
 POPULATION_COLUMN = "population"
 DEATHS_PER_MILLION_COLUMN = "deaths_per_million"
-SINCE_TIME_PERIOD = "2010-W01"
+SINCE_TIME_PERIOD = "2015-W01"
 COUNTRIES = (
     "BE",
     "BG",

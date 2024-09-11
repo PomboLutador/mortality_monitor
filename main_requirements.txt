@@ -4,7 +4,7 @@ flask>=2.2.5
 Flask-Cors==5.0.0
 isort==5.10.1
 mypy==0.920
-numpy>=1.22.0
+numpy==1.24.3
 pandas==1.3.5
 pyjstat==2.2.1
 pandas-stubs==1.2.0.39
